@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% set c = cafe or {} %}
+
+{% block title %} {{ 'Edit Cafe' if cafe else 'Add Cafe' }} {% endblock %}
+
+{% block content %}
+<form action="{{ url_for('update', id=cafe.id) if cafe else url_for('add') }}" method="POST">
+    <label for="name">Cafe Name:</label><br>
+    <input id="name" name="name" value="{{ c.name or '' }}" required><br>
+    <label for="map_url">Map Link:</label><br>
+    <input id="map_url" name="map_url" value="{{ c.map_url or '' }}" required><br>
+    <label for="img_url">Cafe Image:</label><br>
+    <input id="img_url" name="img_url" value="{{ c.img_url or '' }}" required><br>
+    <label for="city">City:</label><br>
+    <input id="city" name="city" value="{{ c.city or '' }}"><br>
+    <label for="location">Address:</label><br>
+    <input id="location" name="location" value="{{ c.location or '' }}" required><br>
+    <label for="seats">How many Seats?</label><br>
+    <input id="seats" name="seats" value="{{ c.seats or '' }}" required><br>
+    <label for="coffee_price">Coffee Price:</label><br>
+    <input id="coffee_price" name="coffee_price" value="{{ c.coffee_price or '' }}" required><br>
+    <label for="has_toilet">Toilet Available?</label><br>
+    <input type="checkbox" id="has_toilet" name="has_toilet" {{ 'checked' if c.has_toilet }}><br>
+    <label for="has_wifi">Has Wifi?</label><br>
+    <input type="checkbox" id="has_wifi" name="has_wifi" {{ 'checked' if c.has_wifi }}><br>
+    <label for="has_sockets">Charging Available?</label><br>
+    <input type="checkbox" id="has_sockets" name="has_sockets" {{ 'checked' if c.has_sockets }}><br>
+    <label for="can_take_calls">Phonecall Friendly?</label><br>
+    <input type="checkbox" id="can_take_calls" name="can_take_calls" {{ 'checked' if c.can_take_calls }}><br>
+    <button type="submit">{{ 'Save Changes' if cafe else 'Add Cafe' }}</button>
+</form>
+
+
+{% endblock %}

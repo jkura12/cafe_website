@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %} CafeFinder {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{% if search_term %}Cafes in {{ search_term | title }}{% else %}
+        Cafes in Your City!{% endif %}
+    </h1>
+    <div class="search-container m-2">
+        <form action="{{ url_for('search') }}" method="get" class="search-container m-2">
+            <input name='search' class="form-control search-input" type="text" placeholder="Search for City...">
+        </form>
+    <a href="/add" class="btn btn-primary m-2" role="button">Add Cafe</a>
+    <a href="/random" class="btn btn-secondary m-2" role="button">Get Random</a>
+    {% for cafe in cafes %}
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-4">
+                <img src="{{ cafe.img_url }}" class="img-fluid rounded-start object-fit-cover cafe-thumb" alt="{{ cafe.name }}" loading="lazy">
+            </div>
+            <div class="col-8 col-md-5">
+                <div class="card-body">
+                    <h3>{{ cafe.name }}</h3>
+                    <h6>Cafe Address: {{ cafe.location }}</h6>
+                    <h6>Total Seats: {{ cafe.seats }}</h6>
+                    <h6>Coffee Price: {{ cafe.coffee_price }}</h6>
+                        
+                    <div class="d-flex flex-column flex-md-row list-unstyled">
+                        {% if cafe.has_toilet %}
+                            <div class="p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-toilet" viewBox="0 0 512 512" role="img" aria-label="Toilet">
+                                    <rect x="247.09" y="18.527" width="29.967" height="474.002"/>
+                                    <path d="M106.846,97.722c21.867,0,39.598-17.73,39.598-39.606c0-21.867-17.73-39.589-39.598-39.589 c-21.885,0-39.598,17.722-39.598,39.589C67.248,79.992,84.961,97.722,106.846,97.722z"/>
+                                    <path d="M184.04,154.202c-8.026-27.097-26.002-45.054-46.244-45.054c-14.994,0-30.95,0-30.95,0s-15.956,0-30.949,0 c-20.243,0-38.238,17.958-46.264,45.054L0.478,257.652c-2.153,8.715,3.172,17.608,11.877,19.742 c8.724,2.153,17.448-2.946,19.6-11.66l29.062-103.13h8.573L19.02,341.994H66.7v133.068c0,10.169,8.252,18.411,18.411,18.411 c10.178,0,18.429-8.242,18.429-18.411V341.994h10.141v133.068c0,10.169,8.252,18.411,18.43,18.411 c10.159,0,18.411-8.242,18.411-18.411V341.994h44.13l-50.569-179.389h8.573l29.061,103.13c2.152,8.714,10.895,13.813,19.6,11.66 c8.724-2.134,14.03-11.028,11.877-19.742L184.04,154.202z"/>
+                                    <path d="M423.174,97.722c21.886,0,39.598-17.73,39.598-39.606c0-21.867-17.712-39.589-39.598-39.589 c-21.866,0-39.598,17.722-39.598,39.589C383.577,79.992,401.308,97.722,423.174,97.722z"/>
+                                    <path d="M471.93,108.902H367.884c-19.184,0-40.07,20.884-40.07,40.07v133.097c0,9.593,7.78,17.373,17.373,17.373 c9.592,0,17.372-7.78,17.372-17.373V172.642h8.006v297.067c0,12.604,10.215,22.82,22.829,22.82 c12.614,0,22.829-10.216,22.829-22.82V297.307h7.365v172.402c0,12.604,10.215,22.82,22.829,22.82 c12.595,0,22.83-10.216,22.83-22.82V172.642h8.006v109.426c0,9.593,7.78,17.373,17.372,17.373c9.593,0,17.373-7.78,17.373-17.373 V148.971C512,129.786,491.115,108.902,471.93,108.902z"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                        {% if cafe.has_wifi %}
+                            <div class="p-2">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wifi" viewBox="0 0 16 16">
+                                <path d="M15.384 6.115a.485.485 0 0 0-.047-.736A12.44 12.44 0 0 0 8 3C5.259 3 2.723 3.882.663 5.379a.485.485 0 0 0-.048.736.52.52 0 0 0 .668.05A11.45 11.45 0 0 1 8 4c2.507 0 4.827.802 6.716 2.164.205.148.49.13.668-.049"/>
+                                <path d="M13.229 8.271a.482.482 0 0 0-.063-.745A9.46 9.46 0 0 0 8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065A8.46 8.46 0 0 1 8 7a8.46 8.46 0 0 1 4.576 1.336c.206.132.48.108.653-.065m-2.183 2.183c.226-.226.185-.605-.1-.75A6.5 6.5 0 0 0 8 9c-1.06 0-2.062.254-2.946.704-.285.145-.326.524-.1.75l.015.015c.16.16.407.19.611.09A5.5 5.5 0 0 1 8 10c.868 0 1.69.201 2.42.56.203.1.45.07.61-.091zM9.06 12.44c.196-.196.198-.52-.04-.66A2 2 0 0 0 8 11.5a2 2 0 0 0-1.02.28c-.238.14-.236.464-.04.66l.706.706a.5.5 0 0 0 .707 0l.707-.707z"/>
+                               </svg> 
+                            </div>
+                        {% endif %}
+                        {% if cafe.has_sockets %}
+                            <div class="p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-battery-charging" viewBox="0 0 16 16">
+                                    <path d="M9.585 2.568a.5.5 0 0 1 .226.58L8.677 6.832h1.99a.5.5 0 0 1 .364.843l-5.334 5.667a.5.5 0 0 1-.842-.49L5.99 9.167H4a.5.5 0 0 1-.364-.843l5.333-5.667a.5.5 0 0 1 .616-.09z"/>
+                                    <path d="M2 4h4.332l-.94 1H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2.38l-.308 1H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2"/>
+                                    <path d="M2 6h2.45L2.908 7.639A1.5 1.5 0 0 0 3.313 10H2zm8.595-2-.308 1H12a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H9.276l-.942 1H12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+                                    <path d="M12 10h-1.783l1.542-1.639q.146-.156.241-.34zm0-3.354V6h-.646a1.5 1.5 0 0 1 .646.646M16 8a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                        {% if cafe.can_take_calls %}
+                            <div class="p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-outbound-fill" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877zM11 .5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V1.707l-4.146 4.147a.5.5 0 0 1-.708-.708L14.293 1H11.5a.5.5 0 0 1-.5-.5"/>
+                                </svg>
+                            </div>
+                        {% endif %}
+                        <div class="p-2">
+                            <a href="/update-cafe/{{ cafe.id }}" class="btn btn-outline-dark btn-sm" role="button" justify >Edit</a>
+                        </div>
+                        <div class="p-2">
+                            <form action="{{ url_for('delete', id=cafe.id) }}" method="POST" data-name="{{ cafe.name }}"
+                                  onsubmit="return confirm('Delete ' + this.dataset.name + '? This cannot be undone.');">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                {% set map_query = (cafe.name ~ ', ' ~ cafe.location ~ ', ' ~ cafe.city) | urlencode %}
+                <iframe class="cafe-map rounded-end"
+                        src="https://maps.google.com/maps?q={{ map_query }}&z=15&output=embed"
+                        title="Map of {{ cafe.name }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ map_query }}" target="_blank" rel="noopener" class="small d-block text-center py-1">Open in Google Maps</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
